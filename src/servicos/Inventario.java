@@ -2,9 +2,13 @@ package servicos;
 
 import modelos.ItemInventario;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Inventario {
     private ItemInventario item;
-    private ArrayList<ItemInventario> inventario = new ArrayList<>();
+    private HashMap<Integer, Integer> inventario;
+
+    public Inventario() {
+        inventario = new HashMap<>();
+    }
 }
