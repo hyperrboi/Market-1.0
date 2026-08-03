@@ -2,8 +2,6 @@ package servicos;
 
 import modelos.Produto;
 
-import java.util.ArrayList;
-
 public class Mercado {
     private Catalogo catalogo;
     private Inventario inventario;
@@ -12,7 +10,7 @@ public class Mercado {
 
     public Mercado() {
         catalogo = new Catalogo();
-        inventario = new Inventario();
+        inventario = new Inventario(catalogo);
     }
 
     public boolean cadastrarProduto(String nome, int unidades, double precoCaixa) {
@@ -21,6 +19,13 @@ public class Mercado {
         }
         Produto p = new Produto(nome, (this.id++), unidades, precoCaixa, this.margemLucro);
         return catalogo.adicionarAoCatalogo(p);
+    }
+
+    public String adicionarEstoque(int id, int quantidade) {
+        if (id <= 0 || quantidade <= 0) {
+            return "Erro ao adicionar ao estoque, id ou quantidade precisam ser maiores que 0";
+        }
+        else return inventario.adicionarEstoque(id, quantidade);
     }
 
     public Catalogo getCatalogo() {

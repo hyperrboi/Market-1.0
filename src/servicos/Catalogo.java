@@ -23,7 +23,7 @@ public class Catalogo {
 
     public boolean encontrarNome(Produto produto) {
         for (Produto p: catalogo) {
-            if (produto.getNome().equals(produto.getNome())) {
+            if (produto.getNome().equals(p.getNome())) {
                 return false;
             }
         }

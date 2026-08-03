@@ -22,6 +22,7 @@ public class Main {
             switch (option) {
                 case 1 -> cadastrarP();
                 case 2 -> System.out.println(mercado.getCatalogo());
+                case 3 -> estocarP();
                 case 6 -> System.out.println("Obrigado por usar o nosso sistema!");
                 default -> System.out.println("Digite novamente");
             }
@@ -55,6 +56,17 @@ public class Main {
         System.out.println((mercado.cadastrarProduto(nome, unidade, preco) ?
                 ("Produto cadastrado com sucesso") :
                 ("Erro ao cadastrar o produto")));
+    }
+
+    private static void estocarP() {
+        scanner.nextLine();
+        System.out.println("Informe o ID do produto");
+        int id = readPositiveInteger();
+        System.out.println("Informe a quantidade a ser estocada: ");
+        int quantidade = readPositiveInteger();
+
+        System.out.println(mercado.adicionarEstoque(id, quantidade));
+
     }
 
     private static String readNonEmptyName() {
