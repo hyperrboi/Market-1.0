@@ -39,6 +39,10 @@ public class Catalogo {
         return null;
     }
 
+    public ArrayList<Produto> getCatalogo() {
+        return catalogo;
+    }
+
     @Override
     public String toString() {
         if (catalogo.isEmpty()) {

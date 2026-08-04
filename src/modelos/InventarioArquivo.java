@@ -1,5 +1,7 @@
 package modelos;
 
+import servicos.Mercado;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,10 +22,7 @@ public class InventarioArquivo {
         }
     }
 
-    public void carregar(HashMap<Integer, Integer> inventario) throws IOException {
-
-        inventario.clear();
-
+    public void carregar(Mercado m) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(caminho.toFile()))) {
             String linha;
 
@@ -34,7 +33,7 @@ public class InventarioArquivo {
                 int id = Integer.parseInt(dados[0]);
                 int quantidade = Integer.parseInt(dados[1]);
 
-                inventario.put(id, quantidade);
+                m.carregarEstoque(id, quantidade);
             }
         }
     }

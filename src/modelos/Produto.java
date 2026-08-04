@@ -29,6 +29,14 @@ public class Produto {
         return nome;
     }
 
+    public int getUnidades() {
+        return unidades;
+    }
+
+    public double getPrecoCaixa() {
+        return precoCaixa;
+    }
+
     @Override
     public String toString() {
         return "ID: %d/ NOME: %s/ UNIDADES: %d/ PRECO/CAIXA: R$%.2f/ PRECO/UNITARIO: R$%.2f".formatted(this.id,
