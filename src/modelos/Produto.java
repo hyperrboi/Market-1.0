@@ -21,13 +21,17 @@ public class Produto {
         return id;
     }
 
+    public double getPrecoUnitario() {
+        return precoUnitario;
+    }
+
     public String getNome() {
         return nome;
     }
 
     @Override
     public String toString() {
-        return "ID: %s/ NOME: %s/ UNIDADES: %d/ PRECOCAIXA: R$%.2f/ PRECOUNITARIO: R$%.2f".formatted(this.id,
+        return "ID: %d/ NOME: %s/ UNIDADES: %d/ PRECO/CAIXA: R$%.2f/ PRECO/UNITARIO: R$%.2f".formatted(this.id,
                 this.nome, this.unidades, this.precoCaixa, this.precoUnitario);
     }
 }

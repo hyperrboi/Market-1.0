@@ -28,4 +28,25 @@ public class Inventario {
 
         return "Item adicionado";
     }
+
+    public HashMap<Integer, Integer> getInventario() {
+        return inventario;
+    }
+
+    @Override
+    public String toString() {
+        if (inventario.isEmpty()) {
+            return "Estoque vazio";
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (Integer id: inventario.keySet()) {
+            Produto p = c.encontrarPorId(id);
+            sb.append("ID: %d/ NOME: %s/ UNIDADES/EM/ESTOQUE: %d/ PRECO/UNITARIO: R$%.2f".formatted
+                    (id, p.getNome(), inventario.get(id), p.getPrecoUnitario())).append(System.lineSeparator());
+        }
+
+        return sb.toString();
+    }
 }

@@ -2,12 +2,22 @@ package app;
 
 import servicos.Mercado;
 
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
-    private static Mercado mercado = new Mercado();
+    private static Mercado mercado;
+
+    static {
+        try {
+            mercado = new Mercado();
+        } catch (IOException e) {
+            System.out.println("Erro ao carregar os arquivos");
+            throw new RuntimeException(e);
+        }
+    }
 
     public static void main(String[] args) {
         int option;
@@ -23,6 +33,7 @@ public class Main {
                 case 1 -> cadastrarP();
                 case 2 -> System.out.println(mercado.getCatalogo());
                 case 3 -> estocarP();
+                case 5 -> System.out.println(mercado.getInventario());
                 case 6 -> System.out.println("Obrigado por usar o nosso sistema!");
                 default -> System.out.println("Digite novamente");
             }
@@ -65,7 +76,12 @@ public class Main {
         System.out.println("Informe a quantidade a ser estocada: ");
         int quantidade = readPositiveInteger();
 
-        System.out.println(mercado.adicionarEstoque(id, quantidade));
+        try {
+            System.out.println(mercado.adicionarEstoque(id, quantidade));
+        } catch (IOException e) {
+            System.out.println("Erro ao adicionar item ao arquivo inventario.txt");
+            throw new RuntimeException(e);
+        }
 
     }
 

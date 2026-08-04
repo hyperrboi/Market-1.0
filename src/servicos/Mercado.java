@@ -1,6 +1,9 @@
 package servicos;
 
+import modelos.InventarioArquivo;
 import modelos.Produto;
+
+import java.io.IOException;
 
 public class Mercado {
     private Catalogo catalogo;
@@ -8,9 +11,13 @@ public class Mercado {
     private double margemLucro = 15;
     private static int id = 1;
 
-    public Mercado() {
+    private InventarioArquivo arquivo;
+
+    public Mercado() throws IOException {
         catalogo = new Catalogo();
         inventario = new Inventario(catalogo);
+        arquivo = new InventarioArquivo();
+        arquivo.carregar(inventario.getInventario());
     }
 
     public boolean cadastrarProduto(String nome, int unidades, double precoCaixa) {
@@ -21,14 +28,21 @@ public class Mercado {
         return catalogo.adicionarAoCatalogo(p);
     }
 
-    public String adicionarEstoque(int id, int quantidade) {
+    public String adicionarEstoque(int id, int quantidade) throws IOException {
         if (id <= 0 || quantidade <= 0) {
             return "Erro ao adicionar ao estoque, id ou quantidade precisam ser maiores que 0";
         }
-        else return inventario.adicionarEstoque(id, quantidade);
+        else {
+            arquivo.salvar(inventario.getInventario());
+            return inventario.adicionarEstoque(id, quantidade);
+        }
     }
 
     public Catalogo getCatalogo() {
         return catalogo;
+    }
+
+    public Inventario getInventario() {
+        return inventario;
     }
 }
