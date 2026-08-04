@@ -64,9 +64,13 @@ public class Main {
         System.out.println("Informe o preço de cada caixa");
         double preco = readPositiveDouble();
 
-        System.out.println((mercado.cadastrarProduto(nome, unidade, preco) ?
-                ("Produto cadastrado com sucesso") :
-                ("Erro ao cadastrar o produto")));
+        try {
+            System.out.println((mercado.cadastrarProduto(nome, unidade, preco) ?
+                    ("Produto cadastrado com sucesso") :
+                    ("Erro ao cadastrar o produto")));
+        } catch (IOException e) {
+            System.out.println("Erro ao acessar o arquivo catalogo.txt");
+        }
     }
 
     private static void estocarP() {

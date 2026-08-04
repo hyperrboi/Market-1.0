@@ -47,6 +47,7 @@ public class CatalogoArquivo {
             for (Produto p: catalogo) {
                 bw.write(p.getId() + ";" + p.getNome() + ";" + p.getUnidades()
                         + ";" + p.getPrecoCaixa() + ";" + m.getMargemLucro());
+                bw.newLine();
             }
         }
     }
