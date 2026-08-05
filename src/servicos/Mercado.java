@@ -20,8 +20,6 @@ public class Mercado {
         inventario = new Inventario(catalogo);
         arquivoI = new InventarioArquivo();
         arquivoC = new CatalogoArquivo();
-        arquivoC.carregar(this);
-        arquivoI.carregar(this);
     }
 
     public void carregarCatalogo(int id, String nome, int unidades, double precoCaixa, double margemLucro) {
@@ -44,6 +42,19 @@ public class Mercado {
         return status;
     }
 
+    public String removerProduto(int id) throws IOException {
+        if (id <= 0) {
+            return "ID precisa ser maior que 0";
+        }
+
+        String mensagem = catalogo.removerProduto(id);
+        if (mensagem.equals("Produto removido")) {
+            arquivoC.salvar(catalogo.getCatalogo(), this);
+        }
+
+        return mensagem;
+    }
+
     public void carregarEstoque(int id, int quantidade) {
         inventario.adicionarEstoque(id, quantidade);
     }
@@ -60,6 +71,19 @@ public class Mercado {
         return mensagem;
     }
 
+    public String removerEstoque(int id, int quantidade) throws IOException {
+        if (id <= 0 || quantidade <= 0) {
+            return "Erro ao remover quantidade do estoque, id ou quantidade precisam ser maiores que 0";
+        }
+
+        String mensagem = inventario.removerEstoque(id, quantidade);
+
+        if (mensagem.equals("Estoque removido") ||
+                mensagem.equals("Estoque e item removidos do inventário")) arquivoI.salvar(inventario.getInventario());
+
+        return mensagem;
+    }
+
     public double getMargemLucro() {
         return margemLucro;
     }
@@ -70,5 +94,13 @@ public class Mercado {
 
     public Inventario getInventario() {
         return inventario;
+    }
+
+    public InventarioArquivo getArquivoI() {
+        return arquivoI;
+    }
+
+    public CatalogoArquivo getArquivoC() {
+        return arquivoC;
     }
 }

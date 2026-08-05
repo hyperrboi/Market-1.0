@@ -20,6 +20,17 @@ public class Catalogo {
         }
     }
 
+    public String removerProduto(int id) {
+        Produto p = encontrarPorId(id);
+
+        if (p == null) {
+            return "Produto não está no catalógo";
+        }
+
+        catalogo.remove(p);
+        return "Produto removido";
+    }
+
     public boolean encontrarNome(Produto produto) {
         for (Produto p: catalogo) {
             if (produto.getNome().equals(p.getNome())) {

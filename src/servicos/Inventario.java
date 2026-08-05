@@ -14,19 +14,31 @@ public class Inventario {
     }
 
     public String adicionarEstoque(int id, int quantidade) {
+        Produto p = c.encontrarPorId(id);
 
-        if (inventario.containsKey(id)) {
-            inventario.put(id, quantidade);
-
-        } else {
-            Produto p = c.encontrarPorId(id);
-            if (p == null) {
-                return "Erro ao adicionar ao estoque, item precisa ser catalogado";
-            }
-            inventario.put(id, quantidade);
+        if (p == null) {
+            return "Erro: Item precisa ser catalogado";
         }
 
+        inventario.put(id, inventario.getOrDefault(id, 0) + quantidade);
+
         return "Item adicionado";
+    }
+
+    public String removerEstoque(int id, int quantidade) {
+        Integer quantidadeEstoque = inventario.get(id);
+
+        if (quantidadeEstoque == null) {
+            return "Erro: Item não catalogado";
+        } else if (quantidadeEstoque < quantidade) {
+            return "Erro: Estoque insuficiente a quantidade a ser removida";
+        } else if (quantidadeEstoque == quantidade) {
+            inventario.remove(id);
+            return "Item e estoque removidos do inventário";
+        }
+
+        inventario.replace(id, inventario.get(id) - quantidade);
+        return "Estoque removido";
     }
 
     public HashMap<Integer, Integer> getInventario() {

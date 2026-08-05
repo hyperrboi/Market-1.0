@@ -13,6 +13,8 @@ public class Main {
     static {
         try {
             mercado = new Mercado();
+            mercado.getArquivoC().carregar(mercado);
+            mercado.getArquivoI().carregar(mercado);
         } catch (IOException e) {
             System.out.println("Erro ao carregar os arquivos");
             throw new RuntimeException(e);
@@ -32,13 +34,15 @@ public class Main {
             switch (option) {
                 case 1 -> cadastrarP();
                 case 2 -> System.out.println(mercado.getCatalogo());
-                case 3 -> estocarP();
-                case 5 -> System.out.println(mercado.getInventario());
-                case 6 -> System.out.println("Obrigado por usar o nosso sistema!");
+                case 3 -> removerProduto();
+                case 4 -> estocarP();
+                case 5 -> removerEstoque();
+                case 6 -> System.out.println(mercado.getInventario());
+                case 7 -> System.out.println("Obrigado por usar o nosso sistema!");
                 default -> System.out.println("Digite novamente");
             }
 
-        } while (option != 6);
+        } while (option != 7);
 
         scanner.close();
     }
@@ -47,15 +51,15 @@ public class Main {
         System.out.println("MENU do Mercado: ");
         System.out.println("1 - Cadastrar produto");
         System.out.println("2 - Mostrar catalógo");
-        System.out.println("3 - Estocar produto");
-        System.out.println("4 - Vender produto");
-        System.out.println("5 - Mostrar estoque");
-        System.out.println("6 - Sair");
+        System.out.println("3 - Remover produto do catalógo");
+        System.out.println("4 - Estocar produto");
+        System.out.println("5 - Remover estoque");
+        System.out.println("6 - Mostrar estoque");
+        System.out.println("7 - Sair");
         return readPositiveInteger();
     }
 
     private static void cadastrarP() {
-
         scanner.nextLine();
         System.out.println("Primeiro informe o nome do produto");
         String nome = readNonEmptyName();
@@ -68,6 +72,18 @@ public class Main {
             System.out.println((mercado.cadastrarProduto(nome, unidade, preco) ?
                     ("Produto cadastrado com sucesso") :
                     ("Erro ao cadastrar o produto")));
+        } catch (IOException e) {
+            System.out.println("Erro ao acessar o arquivo catalogo.txt");
+        }
+    }
+
+    private static void removerProduto() {
+        scanner.nextLine();
+        System.out.println("Informe o id do produto a ser removido: ");
+        int id = readPositiveInteger();
+
+        try {
+            System.out.println(mercado.removerProduto(id));
         } catch (IOException e) {
             System.out.println("Erro ao acessar o arquivo catalogo.txt");
         }
@@ -87,6 +103,20 @@ public class Main {
             throw new RuntimeException(e);
         }
 
+    }
+
+    private static void removerEstoque() {
+        scanner.nextLine();
+        System.out.println("Informe o ID do produto");
+        int id = readPositiveInteger();
+        System.out.println("Informe a quantidade a ser removida: ");
+        int quantidade = readPositiveInteger();
+
+        try {
+            System.out.println(mercado.removerEstoque(id, quantidade));
+        } catch (IOException e) {
+            System.out.println("Erro ao remover itens do arquivo inventario.txt");
+        }
     }
 
     private static String readNonEmptyName() {
