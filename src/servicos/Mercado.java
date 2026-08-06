@@ -5,12 +5,17 @@ import modelos.InventarioArquivo;
 import modelos.Produto;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class Mercado {
     private Catalogo catalogo;
     private Inventario inventario;
+    private Movimentacoes movimentacao;
+
     private double margemLucro = 15;
     private static int id = 1;
+    private String data;
 
     private InventarioArquivo arquivoI;
     private CatalogoArquivo arquivoC;
@@ -18,8 +23,11 @@ public class Mercado {
     public Mercado() throws IOException {
         catalogo = new Catalogo();
         inventario = new Inventario(catalogo);
+        movimentacao = new Movimentacoes();
         arquivoI = new InventarioArquivo();
         arquivoC = new CatalogoArquivo();
+        LocalDate today = LocalDate.now();
+        data = String.valueOf(today);
     }
 
     public void carregarCatalogo(int id, String nome, int unidades, double precoCaixa, double margemLucro) {
@@ -65,6 +73,9 @@ public class Mercado {
         }
 
         String mensagem = inventario.adicionarEstoque(id, quantidade);
+        boolean status = movimentacao.novaCompra(this.data, catalogo.encontrarPorId(id), quantidade);
+
+        if (!status) return "Erro ao finalizar compra";
 
         if (mensagem.equals("Item adicionado")) arquivoI.salvar(inventario.getInventario());
 
@@ -77,6 +88,9 @@ public class Mercado {
         }
 
         String mensagem = inventario.removerEstoque(id, quantidade);
+        boolean status = movimentacao.novaVenda(this.data, catalogo.encontrarPorId(id), quantidade);
+
+        if (!status) return "Erro ao finalizar venda";
 
         if (mensagem.equals("Estoque removido") ||
                 mensagem.equals("Estoque e item removidos do inventário")) arquivoI.salvar(inventario.getInventario());
@@ -102,5 +116,17 @@ public class Mercado {
 
     public CatalogoArquivo getArquivoC() {
         return arquivoC;
+    }
+
+    public String getVendas() {
+        return movimentacao.getVendas();
+    }
+
+    public String getCompras() {
+        return movimentacao.getCompras();
+    }
+
+    public double getCaixa() {
+        return movimentacao.getCaixaTotal();
     }
 }

@@ -38,11 +38,14 @@ public class Main {
                 case 4 -> estocarP();
                 case 5 -> removerEstoque();
                 case 6 -> System.out.println(mercado.getInventario());
-                case 7 -> System.out.println("Obrigado por usar o nosso sistema!");
+                case 7 -> System.out.println(mercado.getCompras());
+                case 8 -> System.out.println(mercado.getVendas());
+                case 9 -> System.out.printf("VALOR ATUAL DO CAIXA: R$%.2f\n", mercado.getCaixa());
+                case 10 -> System.out.println("Obrigado por usar o nosso sistema!");
                 default -> System.out.println("Digite novamente");
             }
 
-        } while (option != 7);
+        } while (option != 10);
 
         scanner.close();
     }
@@ -55,7 +58,10 @@ public class Main {
         System.out.println("4 - Estocar produto");
         System.out.println("5 - Remover estoque");
         System.out.println("6 - Mostrar estoque");
-        System.out.println("7 - Sair");
+        System.out.println("7 - Mostrar histórico de compras");
+        System.out.println("8 - Mostrar histórico de vendas");
+        System.out.println("9 - Mostrar valor do caixa");
+        System.out.println("10 - Sair");
         return readPositiveInteger();
     }
 
