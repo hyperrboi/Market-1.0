@@ -17,6 +17,18 @@ public class Compras {
         return valorTotal;
     }
 
+    public String getData() {
+        return data;
+    }
+
+    public Produto getProduto() {
+        return p;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
     @Override
     public String toString() {
         return ("DATA: %s/ NOME: %s/ " +

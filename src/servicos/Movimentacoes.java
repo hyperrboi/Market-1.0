@@ -1,9 +1,6 @@
 package servicos;
 
-import modelos.CaixaTotalArquivo;
-import modelos.Compras;
-import modelos.Produto;
-import modelos.Vendas;
+import modelos.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,20 +9,26 @@ public class Movimentacoes {
     private static double caixaTotal;
     private ArrayList<Vendas> vendas;
     private ArrayList<Compras> compras;
-    private CaixaTotalArquivo arquivoC;
 
-    public Movimentacoes() throws IOException {
-        this.arquivoC = new CaixaTotalArquivo();
+    private CaixaTotalArquivo arquivoCT;
+    private ComprasArquivo arquivoC;
+
+    public Movimentacoes(Mercado m) throws IOException {
         this.vendas = new ArrayList<Vendas>();
         this.compras = new ArrayList<Compras>();
-        caixaTotal = arquivoC.carregar();
+
+        arquivoC = new ComprasArquivo();
+
+        this.arquivoCT = new CaixaTotalArquivo();
+        caixaTotal = arquivoCT.carregar();
     }
 
     public boolean novaCompra(String data, Produto p, int quantidade) throws IOException {
         Compras c = new Compras(data, p, quantidade);
         compras.add(c);
         caixaTotal -= c.getValorTotal();
-        arquivoC.salvar(caixaTotal);
+        arquivoCT.salvar(caixaTotal);
+        arquivoC.salvar(this);
         return true;
     }
 
@@ -33,8 +36,44 @@ public class Movimentacoes {
         Vendas v = new Vendas(data, p, quantidade);
         vendas.add(v);
         caixaTotal += v.getValorTotal();
-        arquivoC.salvar(caixaTotal);
+        arquivoCT.salvar(caixaTotal);
         return true;
+    }
+
+    public ArrayList<Compras> getListaCompras() {
+        return compras;
+    }
+
+    public String comprasDia(String data) {
+        StringBuilder sb = new StringBuilder();
+
+        for (Compras c : compras) {
+            if (c.getData().equals(data)) {
+                sb.append(c).append(System.lineSeparator());
+            }
+        }
+
+        if (sb.isEmpty()) {
+            return "Não tem históricos de compras feitas nesse dia";
+        }
+
+        return sb.toString();
+    }
+
+    public String vendasDia(String data) {
+        StringBuilder sb = new StringBuilder();
+
+        for (Vendas v : vendas) {
+            if (v.getData().equals(data)) {
+                sb.append(v).append(System.lineSeparator());
+            }
+        }
+
+        if (sb.isEmpty()) {
+            return "Não tem históricos de vendas feitas nesse dia";
+        }
+
+        return sb.toString();
     }
 
     public double getCaixaTotal() {
@@ -48,7 +87,7 @@ public class Movimentacoes {
             return "Histórico de vendas vazio";
         }
 
-        for (Vendas v: vendas) {
+        for (Vendas v : vendas) {
             sb.append(v).append(System.lineSeparator());
         }
 
@@ -62,14 +101,15 @@ public class Movimentacoes {
             return "Histórico de vendas vazio";
         }
 
-        for (Compras c: compras) {
+        for (Compras c : compras) {
             sb.append(c).append(System.lineSeparator());
         }
 
         return sb.toString();
     }
 
-    public static void setCaixaTotal(double caixaTotal) {
-        Movimentacoes.caixaTotal = caixaTotal;
+    public ComprasArquivo getArquivoC() {
+        return arquivoC;
     }
 }
+

@@ -23,7 +23,7 @@ public class Mercado {
     public Mercado() throws IOException {
         catalogo = new Catalogo();
         inventario = new Inventario(catalogo);
-        movimentacao = new Movimentacoes();
+        movimentacao = new Movimentacoes(this);
         arquivoI = new InventarioArquivo();
         arquivoC = new CatalogoArquivo();
         LocalDate today = LocalDate.now();
@@ -50,6 +50,18 @@ public class Mercado {
         return status;
     }
 
+    public String buscarProdutoPorNome(String nome) {
+        Produto p = catalogo.encontrarNome(nome);
+        if (p == null) {
+            return "Não achamos um produto com esse nome, tente novamente";
+        }
+        return p.toString();
+    }
+
+    public Produto encontrarProdutoPorNome(String nome) {
+        return catalogo.encontrarNome(nome);
+    }
+
     public String removerProduto(int id) throws IOException {
         if (id <= 0) {
             return "ID precisa ser maior que 0";
@@ -62,6 +74,7 @@ public class Mercado {
 
         return mensagem;
     }
+
 
     public void carregarEstoque(int id, int quantidade) {
         inventario.adicionarEstoque(id, quantidade);
@@ -124,6 +137,18 @@ public class Mercado {
 
     public String getCompras() {
         return movimentacao.getCompras();
+    }
+
+    public String vendasDia(String data) {
+        return movimentacao.vendasDia(data);
+    }
+
+    public String comprasDia(String data) {
+        return movimentacao.comprasDia(data);
+    }
+
+    public Movimentacoes getMovimentacao() {
+        return movimentacao;
     }
 
     public double getCaixa() {

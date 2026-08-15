@@ -12,7 +12,7 @@ public class Catalogo {
     }
 
     public boolean adicionarAoCatalogo(Produto produto) {
-        if (encontrarNome(produto)) {
+        if (encontrarNome(produto.getNome()) == null) {
             catalogo.add(produto);
             return true;
         } else {
@@ -31,13 +31,13 @@ public class Catalogo {
         return "Produto removido";
     }
 
-    public boolean encontrarNome(Produto produto) {
+    public Produto encontrarNome(String nome) {
         for (Produto p: catalogo) {
-            if (produto.getNome().equals(p.getNome())) {
-                return false;
+            if (nome.equals(p.getNome())) {
+                return p;
             }
         }
-        return true;
+        return null;
     }
 
     public Produto encontrarPorId(int id) {

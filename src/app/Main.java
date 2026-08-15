@@ -1,5 +1,6 @@
 package app;
 
+import servicos.MenuConsole;
 import servicos.Mercado;
 
 import java.io.IOException;
@@ -9,12 +10,15 @@ import java.util.Scanner;
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
     private static Mercado mercado;
+    private static MenuConsole menuConsole;
 
     static {
         try {
             mercado = new Mercado();
+            menuConsole = new MenuConsole(mercado);
             mercado.getArquivoC().carregar(mercado);
             mercado.getArquivoI().carregar(mercado);
+            mercado.getMovimentacao().getArquivoC().carregar(mercado.getMovimentacao(), mercado);
         } catch (IOException e) {
             System.out.println("Erro ao carregar os arquivos");
             throw new RuntimeException(e);
@@ -22,36 +26,18 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        int option;
 
         System.out.println("-------------------------");
         System.out.println("Bem vindo ao Mercado Java");
         System.out.println("-------------------------");
 
-        do {
-            option = mostrarMenu();
-
-            switch (option) {
-                case 1 -> cadastrarP();
-                case 2 -> System.out.println(mercado.getCatalogo());
-                case 3 -> removerProduto();
-                case 4 -> estocarP();
-                case 5 -> removerEstoque();
-                case 6 -> System.out.println(mercado.getInventario());
-                case 7 -> System.out.println(mercado.getCompras());
-                case 8 -> System.out.println(mercado.getVendas());
-                case 9 -> System.out.printf("VALOR ATUAL DO CAIXA: R$%.2f\n", mercado.getCaixa());
-                case 10 -> System.out.println("Obrigado por usar o nosso sistema!");
-                default -> System.out.println("Digite novamente");
-            }
-
-        } while (option != 10);
+        menuConsole.menuPrincipal();
 
         scanner.close();
     }
 
-    private static int mostrarMenu() {
-        System.out.println("MENU do Mercado: ");
+
+        /*int option = readPositiveInteger();
         System.out.println("1 - Cadastrar produto");
         System.out.println("2 - Mostrar catalógo");
         System.out.println("3 - Remover produto do catalógo");
@@ -65,23 +51,6 @@ public class Main {
         return readPositiveInteger();
     }
 
-    private static void cadastrarP() {
-        scanner.nextLine();
-        System.out.println("Primeiro informe o nome do produto");
-        String nome = readNonEmptyName();
-        System.out.println("Informe a quantidade de unidades que vem em cada caixa");
-        int unidade = readPositiveInteger();
-        System.out.println("Informe o preço de cada caixa");
-        double preco = readPositiveDouble();
-
-        try {
-            System.out.println((mercado.cadastrarProduto(nome, unidade, preco) ?
-                    ("Produto cadastrado com sucesso") :
-                    ("Erro ao cadastrar o produto")));
-        } catch (IOException e) {
-            System.out.println("Erro ao acessar o arquivo catalogo.txt");
-        }
-    }
 
     private static void removerProduto() {
         scanner.nextLine();
@@ -123,61 +92,5 @@ public class Main {
         } catch (IOException e) {
             System.out.println("Erro ao remover itens do arquivo inventario.txt");
         }
-    }
-
-    private static String readNonEmptyName() {
-        while (true) {
-
-            System.out.print("Digite o nome: ");
-            String nome = scanner.nextLine().toUpperCase().trim().replace(" ", "");
-
-            if (!nome.isBlank()) {
-                return nome;
-            }
-
-            System.out.println("Nome não pode ser vazio!");
-        }
-    }
-
-    private static int readPositiveInteger() {
-        while (true) {
-
-            System.out.print("Digite o número: ");
-
-            try {
-                int number = scanner.nextInt();
-
-                if (number > 0) {
-                    return number;
-                }
-
-                System.out.println("Número tem que ser maior que zero");
-
-            } catch (InputMismatchException e) {
-                System.out.println("Escolha inválida! Esperava um número inteiro");
-                scanner.next();
-            }
-        }
-    }
-
-    private static double readPositiveDouble() {
-        while (true) {
-
-            System.out.print("Digite o valor: R$");
-
-            try {
-                double numero = scanner.nextDouble();
-
-                if (numero > 0) {
-                    return numero;
-                }
-
-                System.out.println("Valor precisa ser positivo");
-            } catch (InputMismatchException e) {
-                System.out.println("Valor inválido! Esperava um número decimal");
-                scanner.next();
-            }
-        }
-    }
-
+    }*/
 }

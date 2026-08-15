@@ -13,6 +13,10 @@ public class Vendas {
         this.valorTotal = (p.getPrecoUnitario() * quantidade);
     }
 
+    public String getData() {
+        return data;
+    }
+
     public double getValorTotal() {
         return valorTotal;
     }
